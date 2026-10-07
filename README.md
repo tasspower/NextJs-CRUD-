@@ -1,36 +1,97 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+### 📄 **ส่วนที่ 1: โค้ดสำหรับสร้างไฟล์** **README.md**
 
-## Getting Started
+ให้สร้างไฟล์ชื่อ **README.md** ไว้ที่โฟลเดอร์นอกสุดของโปรเจกต์ (`my-app/README.md`) แล้วคัดลอกข้อความด้านล่างนี้ไปวางได้เลยครับ:
 
-First, run the development server:
+```
+# 🎓 Student Management System (Next.js + Prisma + SQLite)
 
+ระบบจัดการข้อมูลนักศึกษา (Student Management Application) พัฒนาด้วย **Next.js (App Router)**, **Prisma ORM** และ **SQLite** พร้อมตกแต่งหน้าตาผู้ใช้ด้วย **Tailwind CSS**
+
+---
+
+## 🛠️ เทคโนโลยีที่ใช้ (Tech Stack)
+
+- **Frontend &amp; Backend Framework:** Next.js 15+ (App Router &amp; Server Actions)
+- **Language:** TypeScript
+- **Database:** SQLite
+- **ORM:** Prisma Client (v7) &amp; `@prisma/adapter-better-sqlite3`
+- **Styling:** Tailwind CSS
+
+---
+
+## ✨ ฟีเจอร์การใช้งาน (Features)
+
+- 📋 **READ (แสดงรายการ):** แสดงตารางรายชื่อนักศึกษา สรุปจำนวนนักศึกษาทั้งหมดในระบบ และแสดงสถานะการศึกษา (กำลังศึกษา / พ้นสภาพ)
+- ➕ **CREATE (เพิ่มข้อมูล):** ฟอร์มกรอกข้อมูลนักศึกษาใหม่ ได้แก่ รหัสนักศึกษา, ชื่อ-นามสกุล, อีเมล, สาขาวิชา, ชั้นปี และสถานะการศึกษา
+
+---
+
+## 🚀 วิธีการติดตั้งและรันโปรเจกต์ (Setup &amp; Installation)
+
+### 1. Clone Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+cd YOUR_REPO_NAME
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2\. ติดตั้ง Dependencies
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```
+npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
 
-## Learn More
+### 3\. ตั้งค่า Environment Variable (`.env`)
 
-To learn more about Next.js, take a look at the following resources:
+สร้างไฟล์ `.env` ไว้ที่โฟลเดอร์หลักของโปรเจกต์ (หากยังไม่มี) และเพิ่มบรรทัดนี้ลงไป:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```
+DATABASE_URL="file:./dev.db"
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
 
-## Deploy on Vercel
+### 4\. ซิงค์ Database Schema และ Generate Prisma Client
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+# รัน Migration เพื่อสร้างฐานข้อมูล SQLite
+npx prisma migrate dev --name init
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+# สั่ง Generate Prisma Client
+npx prisma generate
+
+```
+
+### 5\. รันโปรเจกต์ในโหมด Development
+
+```
+npm run dev
+
+```
+
+เปิดเบราว์เซอร์ไปที่ [http://localhost:3000](https://www.google.com/url?sa=E&amp;q=http%3A%2F%2Flocalhost%3A3000) (ระบบจะนำทางไปยังหน้า `/students` อัตโนมัติ)
+
+---
+
+## 📁 โครงสร้างโปรเจกต์ (Project Structure)
+
+```
+my-app/
+├── app/
+│   ├── generated/prisma/  # โฟลเดอร์ Prisma Client ที่สร้างจากการ Generate
+│   ├── lib/
+│   │   └── prisma.ts      # ไฟล์เชื่อมต่อ Prisma Client Singleton
+│   ├── students/
+│   │   ├── create/
+│   │   │   └── page.tsx   # หน้าฟอร์มเพิ่มข้อมูลนักศึกษา (Create)
+│   │   └── page.tsx       # หน้าแสดงรายการนักศึกษา (Read)
+│   ├── globals.css        # ไฟล์ตั้งค่า Tailwind CSS
+│   ├── layout.tsx         # Component โครงสร้างหลักของหน้าเว็บ (Navbar)
+│   └── page.tsx           # หน้า Root (Redirect ไป /students)
+├── prisma/
+│   ├── migrations/        # ประวัติการจัดการ DB Migration
+│   ├── dev.db             # ไฟล์ฐานข้อมูล SQLite
+│   └── schema.prisma      # โครงสร้างตารางข้อมูล Student
+├── .env                   # ไฟล์เก็บค่า Config และ Database URL
+└── package.json
+```
